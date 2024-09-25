@@ -94,10 +94,18 @@ dobInput.addEventListener('input', () => validateDob(dobInput));
 function validateDob(elem) {
     const dobValue = elem.value;
     const dob = new Date(dobValue);
-    const cutoffDate = new Date("1967-01-01");
+    const today = new Date();
+    const minAge = 18;
+    const maxAge = 55;
 
-    if (dob < cutoffDate) {
-        elem.setCustomValidity("Date of Birth must be after 1967.");
+    let age = today.getFullYear() - dob.getFullYear();
+    let m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    if (age < minAge || age > maxAge) {
+        elem.setCustomValidity(`You must be between ${minAge} and ${maxAge} years old.`);
         elem.reportValidity();
     } else {
         elem.setCustomValidity("");
